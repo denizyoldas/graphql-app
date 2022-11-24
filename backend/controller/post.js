@@ -17,8 +17,10 @@ function getPostsWithAuthor() {
     .populate("author")
     .then((posts) => {
       return posts.map((post) => {
+        console.log(post);
         return {
           ...post._doc,
+          id: post._id,
         };
       });
     })
@@ -41,8 +43,17 @@ function addPost(req, res) {
   });
 }
 
+function deletePost(req, res) {
+  console.log(req.params.id);
+  Post.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Post deleted!" });
+  });
+}
+
 module.exports = {
   getPostsWithAuthor,
   getPosts,
   addPost,
+  deletePost,
 };
